@@ -1,12 +1,17 @@
 const User = require("../models/UserModel");
 const bcrypt = require("bcryptjs");
-const validator = require("express-validator");
+const { validationResult } = require("express-validator");
 
 exports.authRegister = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
-  console.log("Fields", firstName, lastName, email, password);
+  //console.log("Fields", firstName, lastName, email, password);
 
-  //TODO-1: Validate fields
+  //TODO-1:+ Validate fields
+  const validationError = validationResult(req);
+  //console.log("VAL ERROR  : ", validationError);
+  if (validationError?.errors?.length > 0) {
+    return res.status(400).json({ errors: validationError.array() });
+  }
 
   //TODO-2:+ check if user is already registered
   const userData = await User.findOne({ email }); //Bring this record with the email we send
