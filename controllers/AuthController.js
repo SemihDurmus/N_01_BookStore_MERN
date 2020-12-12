@@ -1,4 +1,5 @@
 const User = require("../models/UserModel");
+const bcrypt = require("bcryptjs");
 
 exports.authRegister = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
@@ -6,13 +7,16 @@ exports.authRegister = async (req, res) => {
   //TODO-1: Validate fields
   //TODO-2: check if already registered
   //TODO-3: crypt password
-  //TODO-4: save the user to DB
+  //TODO-4:+ save the user to DB
 
+  const salt = await bcrypt.genSalt(10);
+  const newPassword = await bcrypt.hash(password, salt);
+  console.log(salt, newPassword);
   const user = new User({
     firstName,
     lastName,
     email,
-    password, //crypted password
+    password: newPassword, //crypted password
   });
 
   await user.save();
