@@ -11,6 +11,6 @@ connectDB();
 app.use(express.json());
 app.use("/api", router);
 
-app.listen(5000, () => {
+app.listen(process.env.PORT, () => {
   console.log("I'm listening on port : 5000");
 });
