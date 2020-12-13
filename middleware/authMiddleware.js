@@ -1,16 +1,18 @@
-const jwt = require("jsonwebtoken");
+var jwt = require("jsonwebtoken");
 
 const authMiddleware = (req, res, next) => {
-  //TODO-1:+ get Token
+  //get Token
   const token = req.header("token");
-  //TODO-2:+ return error if there is no token
+
+  //Return error if token doesn't exist
   if (!token) {
-    return res.status(401).json({ msg: "No token" });
+    return res.status(401).json({ msg: "No Token" });
   }
-  //TODO-3: verify token
+
+  //Verify token
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
     if (err) {
-      return res.status(401).json({ msg: "Invalid token" });
+      return res.status(401).json({ msg: "Invalid Token" });
     } else {
       req.decodedUser = decodedToken.userData;
       next();
